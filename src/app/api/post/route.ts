@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server'
 import { connectToDatabase } from '../../../utils/dbConnect'
 
-export async function GET(req: Request, res: Response): Promise<NextResponse> {
-  return NextResponse.json({ message: 'welcome', res: res.json() }, { status: 200 })
+export async function GET(req: Request): Promise<NextResponse> {
+  const db = await connectToDatabase()
+  const posts = await db.collection('posts').find().toArray()
+  return NextResponse.json(posts, { status: 200 })
 }
 
 export async function POST(req: Request): Promise<NextResponse> {
